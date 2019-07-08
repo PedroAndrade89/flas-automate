@@ -1,0 +1,26 @@
+---
+## This playbook deploys the flask web application,
+
+# Apply common configuration to all hosts
+- hosts: webapps
+  become: yes
+  become_method: sudo
+
+  roles:
+    - flask-app
+
+  tags:
+    - flask-app
+
+# Configure and deploy lb
+- hosts: lbalancer
+  become: yes
+  become_method: sudo
+
+  roles:
+    - load-balancer
+
+  tags: 
+    - load-balancer
+
+

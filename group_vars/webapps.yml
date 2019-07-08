@@ -1,0 +1,9 @@
+---
+# The variables file used by the playbooks in the web-app group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+ssh_user: centos
+github_user: PedroAndrade89
+app_name: flask-app
+
+iface: '{{ ansible_default_ipv4.interface }}'

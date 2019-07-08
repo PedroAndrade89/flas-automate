@@ -1,0 +1,9 @@
+[webapps]
+pandrade-1
+pandrade-2
+
+[lbalancer]
+pandrade-3
+
+[monitoring]
+pandrade-3

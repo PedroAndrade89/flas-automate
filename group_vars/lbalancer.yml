@@ -1,0 +1,7 @@
+---
+# The variables file used by the playbooks in the load-balancer group.
+# These don't have to be explicitly imported by vars_files: they are autopopulated.
+
+
+
+iface: '{{ ansible_default_ipv4.interface }}'

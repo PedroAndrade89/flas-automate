@@ -1,0 +1,70 @@
+# Ansible role to deploy flask app 
+
+
+- name: Install epel-release if not present
+  yum: 
+    name: epel-release
+    state: latest
+
+- name: Upgrade all yum packages
+  yum: 
+    name: '*'
+    state: latest 
+
+- name: Install packages gcc, nginx, git, python-pip, python-virtualenv
+  yum:
+    name:
+      - gcc
+      - nginx   
+      - git   
+      - python-pip   
+      - python-virtualenv
+    state: present
+
+# Disable SELinux
+- selinux:
+    state: disabled
+
+- name: Clone repo https://github.com/{{ github_user }}/{{ app_name }}.git
+  git:
+    repo: 'https://github.com/{{ github_user }}/{{ app_name }}.git'
+    dest: /home/{{ ssh_user }}/{{ app_name }}
+    force: yes
+    update: yes
+
+
+- name: Install flask and gunicorn modules in virtualenv
+  pip:
+    requirements: /home/{{ ssh_user }}/{{ app_name }}/requirements.txt
+    virtualenv: /home/{{ ssh_user }}/{{ app_name }}/venv
+
+
+- name: Configure {{ app_name }} service unit file
+  template: src=flaskapp.service dest=/etc/systemd/system/{{ app_name }}.service
+
+
+- name: Setting permissions of file /etc/systemd/system/{{ app_name }}.service
+  file:
+    path: /etc/systemd/system/{{ app_name }}.service
+    mode: 0755
+
+- replace:
+    path: /etc/systemd/system/{{ app_name }}.service
+    regexp: 'application'
+    replace: '{{ app_name }}'
+
+
+- replace:
+    path: /etc/systemd/system/{{ app_name }}.service
+    regexp: 'user'
+    replace: '{{ ssh_user }}'
+
+- replace:
+    path: /etc/systemd/system/{{ app_name }}.service
+    regexp: 'host'
+    replace: '{{ ansible_hostname }}'
+
+- name: Start {{ app_name }}
+  systemd:
+    name: '{{ app_name }}'
+    state: restarted

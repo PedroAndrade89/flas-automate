@@ -1,0 +1,16 @@
+# Ansible role to deploy nginx load-balancer 
+
+---
+
+- name: Install nginx
+  yum:
+    name: nginx
+
+    
+- name: Configure the lb upstream servers
+  template: src=flaskapp.conf dest=/etc/nginx/conf.d/default.conf
+
+- name: Configure the lb conf
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+
