@@ -7,17 +7,37 @@
 # will be applied as part of the rolling update process.
 #
 
+- hosts: lbalancer
+  tasks: []
+
 - hosts: webapps
   become: yes
   become_method: sudo
 
   serial: 1
 
+  pre_tasks:
+  - name: Disable server without backend pool name (apply to all available backend pool)
+    haproxy: 'state=disabled backend=flaskapp host={{ inventory_hostname }} socket=/var/lib/haproxy/stats'
+    delegate_to: "{{ item }}"
+    with_items: "{{ groups.lbalancer }}"
+
   roles:
   - flask-app
 
 
-  # These tasks run after the roles:
-  #post_tasks:
-  #- name: wait for webserver to come up
-  #  wait_for: 'host={{ inventory_hostname }} port=80 state=started timeout=80'
+  post_tasks:
+  - name: wait for webserver to come up
+    wait_for:
+      host: 
+      port: 80
+      state: started
+      timeout: 80
+
+  - name: enable the server in haproxy
+    haproxy: 'state=enabled backend=flaskapp host={{ inventory_hostname }} socket=/var/lib/haproxy/stats' 
+    delegate_to: "{{ item }}"
+    with_items: "{{ groups.lbalancer }}"
+
+
+

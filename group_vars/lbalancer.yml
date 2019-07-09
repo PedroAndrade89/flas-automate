@@ -1,7 +1,28 @@
+    
 ---
-# The variables file used by the playbooks in the load-balancer group.
-# These don't have to be explicitly imported by vars_files: they are autopopulated.
+# Variables for the HAproxy configuration
 
+# HAProxy supports "http" and "tcp". For SSL, SMTP, etc, use "tcp".
+mode: http
 
+# Port on which HAProxy should listen
+listenport: 80
 
+# A name for the proxy daemon, this wil be the suffix in the logs.
+daemonname: flaskapplb
+
+# Balancing Algorithm. Available options:
+# roundrobin, source, leastconn, source, uri
+# (if persistance is required use, "source")
+balance: roundrobin 
+
+# Ethernet interface on which the load balancer should listen
+# Defaults to the first interface. Change this to:
+#
+#  iface: eth1
+#
+# ...to override.
+#
 iface: '{{ ansible_default_ipv4.interface }}'
+
+httpd_port: 80

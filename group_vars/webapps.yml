@@ -7,3 +7,5 @@ github_user: PedroAndrade89
 app_name: flask-app
 
 iface: '{{ ansible_default_ipv4.interface }}'
+
+httpd_port: 80

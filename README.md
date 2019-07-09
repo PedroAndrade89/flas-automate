@@ -4,8 +4,8 @@ Deployment of a python flask web application behind ngix working as a load balan
 - Test made with Ansible 2.7.5
 - Expects CentOS/RHEL 7 hosts
 
-This playbook will deploy a Python flask web app from a GitHub repository that will be served by Gunicorn WSGI HTTP server.
-Additionally nginx will be deployed to work as a load balancer in from of the servers. This set of playbooks also have the capability to dynamically add and remove web server nodes from the deployment.
+This playbook will deploy a Python flask web app from a GitHub repository that will be served by Gunicorn WSGI HTTP server. A reverse-proxy(nginx) is deployed in front of the application.
+Additionally haproxy will be deployed to work as a load balancer in front of the servers. This set of playbooks also have the capability to dynamically add and remove web server nodes from the deployment.
 There is tags in place, so if we want to run only a specific role(ex. load-balancer) and don't do the full deployment just add --tags "load-balancer" to ansible-playbook command
 
 ### Prerequesites

@@ -7,7 +7,7 @@ User=user
 PIDFile=/var/run/application.pid
 Environment=/home/user/application/venv/bin/activate
 WorkingDirectory=/home/user/application
-ExecStart=/home/user/application/venv/bin/gunicorn --workers=1 --bind=host:8000 application:app
+ExecStart=/home/user/application/venv/bin/gunicorn --workers=1 --bind=host:8060 application:app
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 
