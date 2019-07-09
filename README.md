@@ -59,7 +59,7 @@ In this example the hosts are updated in serial fashion, which means that only o
 
 Once the code has been updated in the source repository for your application which can be defined in the group_vars/all file, execute the following command:
 ```
- ansible-playbook -i hosts rolling_update.yml
+ ansible-playbook -u "ssh_user" -i  rolling_update.yml
 ```
 
 
